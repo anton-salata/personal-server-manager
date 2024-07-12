@@ -1,0 +1,8 @@
+﻿<Application x:Class="PersonalServerManager.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:ui="http://schemas.modernwpf.com/2019"
+             xmlns:local="clr-namespace:PersonalServerManager">
+    <Application.Resources>      
+    </Application.Resources>
+</Application>
