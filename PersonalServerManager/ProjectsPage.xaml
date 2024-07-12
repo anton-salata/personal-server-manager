@@ -1,0 +1,94 @@
+﻿<UserControl x:Class="PersonalServerManager.ProjectsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+               xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:local="clr-namespace:PersonalServerManager"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <!-- Style for ListViewItem -->
+        <Style TargetType="ListViewItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <!-- Hover effect -->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E0E0E0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!-- Style for ListView -->
+        <Style TargetType="ListView">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Menu Row -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
+            <Button Margin="5" Padding="3" Click="AddProjectButton_Click">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconFontAwesome Kind="PlusSolid" Foreground="#e7a634"/>
+                        <TextBlock Text="Add" VerticalAlignment="Center" Margin="5,0,0,0" />
+                    </StackPanel>
+
+                </Button.Content>
+            </Button>
+            <Button Margin="5" Padding="3">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconFontAwesome Kind="TrashSolid" Foreground="#e7a634"/>
+                        <TextBlock Text="Delete" VerticalAlignment="Center" Margin="5,0,0,0" />
+                    </StackPanel>
+
+                </Button.Content>
+            </Button>
+        </StackPanel>
+
+        <!-- Servers List -->
+        <ListView x:Name="ProjectsListView" ItemsSource="{Binding Projects}" Grid.Row="1" Margin="10">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock  Text="Name" Foreground="Gray" FontSize="10" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <TextBlock MinWidth="150" Text="{Binding Name}" Foreground="Black" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock  Text="Path" Foreground="Gray" FontSize="10" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <TextBlock MinWidth="150" Text="{Binding Path}" Foreground="Black" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock   Text="Notes" Foreground="Gray" FontSize="10" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <TextBlock MinWidth="150" Text="{Binding Notes}" Foreground="Black" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+
+
+    </Grid>
+</UserControl>

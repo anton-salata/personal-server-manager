@@ -1,0 +1,551 @@
+﻿<Window x:Class="PersonalServerManager.ServerDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PersonalServerManager"
+          xmlns:local2="clr-namespace:PersonalServerManager.Entities"      
+        mc:Ignorable="d"
+         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        Icon="Images/sm_icon.png"
+       Title="{Binding ServerDetailsTitle}" Height="550" Width="805">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.Background>
+            <ImageBrush ImageSource="Images/bgrnd11.png" Stretch="UniformToFill" AlignmentX="Left" AlignmentY="Top" />
+        </Grid.Background>
+        <!-- Top Row: Logo and Text -->
+        <Grid Grid.Row="0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.Background>
+                <ImageBrush ImageSource="Images/bgrnd11.png" Stretch="UniformToFill" AlignmentX="Left" AlignmentY="Top" />
+            </Grid.Background>
+            <iconPacks:PackIconFontAwesome Kind="ServerSolid" Grid.Column="0" Height="35" Width="50" VerticalAlignment="Center" Foreground="#e7a634"/>
+            <!--<Image Grid.Column="0" Source="Images/ServerManagerLogo.png" Width="271" Height="100" VerticalAlignment="Center"/>-->
+            <TextBlock  Grid.Column="1" Text="{Binding ServerDetailsTitle}" Foreground="White" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"
+                   Margin="0,0,10,10"/>
+        </Grid>
+
+        <TabControl Grid.Row="1">
+            <TabControl.Background>
+                <ImageBrush ImageSource="Images/bgrnd2.png" Stretch="UniformToFill" AlignmentX="Left" AlignmentY="Top" />
+            </TabControl.Background>
+            <!-- Define your tabs here -->
+            <TabItem Header="Dashboard">
+                <!--<TabItem.Header>
+                    -->
+                <!-- Use a StackPanel to hold both the icon and text -->
+                <!--
+                    <StackPanel Orientation="Horizontal" Margin="-8">
+                        <StackPanel.Background>
+                            <ImageBrush ImageSource="Images/bgrnd6.png" Stretch="UniformToFill" AlignmentX="Left" AlignmentY="Top" />
+                        </StackPanel.Background>
+                            <iconPacks:PackIconFontAwesome Kind="TachometerAltSolid"  Margin="3" Foreground="#e7a634"/>
+                        <TextBlock Text="Dashboard"/>
+                    </StackPanel>
+                </TabItem.Header>-->
+                <TabItem.Background>
+                    <ImageBrush ImageSource="Images/bgrnd2.png" Stretch="UniformToFill" AlignmentX="Left" AlignmentY="Top" />
+                </TabItem.Background>
+                <StackPanel Orientation="Horizontal" Height="100px" VerticalAlignment="Top">
+                    <!-- Card 1 -->
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="5" CornerRadius="5" Background="WhiteSmoke">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="{Binding Stats.ServersCount}" FontWeight="Bold" FontSize="18" HorizontalAlignment="Right"/>
+                            <TextBlock Text="Servers" />
+                        </StackPanel>
+                    </Border>
+                    <!-- Card 2 -->
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="5" CornerRadius="5" Background="WhiteSmoke">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="{Binding Stats.ScriptsCount}" FontWeight="Bold" FontSize="18" HorizontalAlignment="Right"/>
+                            <TextBlock Text="Scripts" />
+                        </StackPanel>
+                    </Border>
+                    <!-- Card 2 -->
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="5" CornerRadius="5" Background="WhiteSmoke">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="{Binding Stats.DeploymentsCount}" FontWeight="Bold" FontSize="18" HorizontalAlignment="Right"/>
+                            <TextBlock Text="Deployments" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </TabItem>
+
+
+            <TabItem Header="Files">
+                <TabItem.Background>
+                    <ImageBrush ImageSource="Images/bgrnd2.png" Stretch="UniformToFill" AlignmentX="Left" AlignmentY="Top" />
+                </TabItem.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="80px"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TreeView Grid.Row="0" Grid.Column="0" Name="fileSystemTreeView" ItemsSource="{Binding FileSystem.RootDirectory.Children}" Margin="5,5,5,5"  SelectedItemChanged="TreeView_SelectedItemChanged">
+                        <TreeView.Resources>
+                            <HierarchicalDataTemplate DataType="{x:Type local2:FileSystemItem}" ItemsSource="{Binding Children}" >
+                                <TextBlock Text="{Binding Name}"/>
+                            </HierarchicalDataTemplate>
+                        </TreeView.Resources>
+                    </TreeView>
+
+                    <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical" Grid.RowSpan="2">
+                        <Button Content="Upload" Command="{Binding Scripts.NewScriptCommand}" Margin="5,5,5,5"/>
+                        <Button Content="Download" Command="{Binding Scripts.DeleteScriptCommand}"  Margin="5,0,5,5" IsEnabled="True" />
+                        <Button Content="View" Command="{Binding FileSystem.ViewButtonCommand}" Margin="5,0,5,5"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Vertical">
+
+                        <Button Content="Save Changes" Command="{Binding Scripts.NewScriptCommand}" Margin="5,0,5,5"/>
+
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
+                            <ContentControl Content="{Binding FileSystem.Content}" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        </ScrollViewer>
+
+
+                    </StackPanel>
+
+                </Grid>
+
+
+            </TabItem>
+
+            <TabItem Header="Scripts">
+                <TabItem.Background>
+                    <ImageBrush ImageSource="Images/bgrnd2.png" Stretch="UniformToFill" AlignmentX="Left" AlignmentY="Top" />
+                </TabItem.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="80px"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+
+                    <!-- First column: ListBox with scripts -->
+                    <ListBox Grid.Column="0" Grid.Row="0" SelectionChanged="ListBox_SelectionChanged" ItemsSource="{Binding Scripts.Scripts}" SelectedItem="{Binding Scripts.SelectedScript}" Margin="5,5,5,5">
+                        <!-- Define DataTemplate for ListBox items -->
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <!-- New and Delete buttons -->
+                    <StackPanel Grid.Column="0"  Grid.Row="1" VerticalAlignment="Bottom" >
+                        <Button Content="New" Command="{Binding Scripts.NewScriptCommand}" Margin="5,0,5,5"/>
+                        <Button Content="New From Template" Command="{Binding Scripts.NewScriptCommand}" Margin="5,0,5,5"/>
+                        <Button Content="Delete" Command="{Binding Scripts.DeleteScriptCommand}"  Margin="5,0,5,5" IsEnabled="True" />
+                    </StackPanel>
+
+                    <!-- Second column: TextArea with script content -->
+
+                    <!--<RichTextBox Grid.Row="0" Grid.Column="1" Name="richTextBox" TextChanged="TextBox_TextChanged"
+             VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"  Margin="5,5,5,5">
+                        <FlowDocument>
+                            <Paragraph>
+                                --><!-- Initial text or binding goes here --><!--
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>-->
+
+
+                    <!--<RichTextBox Grid.Row="0" Grid.Column="1"   Text="{Binding Scripts.SelectedScript.Content}" TextChanged="TextBox_TextChanged"
+                             VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"  Margin="5,5,5,5"></RichTextBox>-->
+
+                    <TextBox Grid.Row="0" Grid.Column="1"   Text="{Binding Scripts.SelectedScript.Content}"
+                             VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"  Margin="5,5,5,5"></TextBox>
+
+                    <!-- Save changes button -->
+                    <Button Grid.Column="1" Grid.Row="1" Content="Save Changes"  Margin="5,5,5,5"  />
+
+                    <!-- Third column: Area with labels and textboxes for script parameters -->
+                    <Grid Grid.Column="2" Margin="5,5,5,5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                   TextWrapping="Wrap"
+               TextTrimming="WordEllipsis">For inserting server ip, user name and password                             
+                            use following placeholders (works in params and script text itself):
+                              <Bold>
+                            <LineBreak/>
+                            {_serverip_}
+                            <LineBreak/>
+                            {_username_}
+                            <LineBreak/>
+                            {_userpwd_}
+                                </Bold>
+                              <LineBreak/>
+                        </TextBlock>
+
+
+
+                        <!-- Labels and TextBoxes for script parameters -->
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="zipname:"  Margin="0,0,0,5"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="fdasdfasdf" Margin="5,0,0,5" />
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="detination:" Margin="0,0,0,5"/>
+                        <TextBox Grid.Row="2" Grid.Column="1"  Text="asdfasdfa" Margin="5,0,0,5"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="log_name:" Margin="0,0,0,5"/>
+                        <TextBox Grid.Row="3" Grid.Column="1"  Text="asdfasdf" Margin="5,0,0,5"/>
+
+                        <Button Grid.Row="4"  Grid.ColumnSpan="2" Content="Save" Command="{Binding ExecuteCommand}"  Margin="0,5,0,0"/>
+                    </Grid>
+
+                    <!-- Execute button -->
+                    <StackPanel  Grid.Row="1"  Grid.Column="2" >
+                        <Button Content="Execute On Remote" Command="{Binding ExecuteCommand}"  Margin="5,5,5,0"/>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <ComboBox Grid.Column="0" Height="20" Width="Auto" Margin="5,0,0,0">
+                                <ComboBoxItem IsSelected="True">WSL</ComboBoxItem>
+                                <ComboBoxItem>PowerShell</ComboBoxItem>
+                                <ComboBoxItem>Windows Console</ComboBoxItem>
+                            </ComboBox>
+
+                            <Button Grid.Column="1"  Content="Execute On Host" Command="{Binding ExecuteCommand}"  Margin="5,5,5,5"/>
+                        </Grid>
+
+
+
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Web Sites">
+                <TabItem.Background>
+                    <ImageBrush ImageSource="Images/bgrnd2.png" Stretch="UniformToFill" AlignmentX="Left" AlignmentY="Top" />
+                </TabItem.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30px"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="25px"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Row="0"  Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock  Text="Nginx Configs" FontWeight="Bold" FontSize="12" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <Button Margin="5" HorizontalAlignment="Right">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconFontAwesome Kind="PlusSolid" />
+                                    <TextBlock Text="Add" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                </StackPanel>
+
+                            </Button.Content>
+                        </Button>
+                        <Button Margin="5" HorizontalAlignment="Right">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconFontAwesome Kind="TrashSolid" />
+                                    <TextBlock Text="Delete" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                </StackPanel>
+
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- First column: ListBox with scripts -->
+                    <ListBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Scripts.Scripts}" SelectedItem="{Binding Scripts.SelectedScript}" Margin="5,5,5,5">
+                        <!-- Define DataTemplate for ListBox items -->
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <TextBox  Grid.Row="2"  Grid.Column="0"  Text="This your config text" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"  Margin="5,5,5,5" />
+
+                    <Button Grid.Row="3"  Grid.Column="0"  Content="Save" Margin="5,5,5,0"/>
+
+
+                    <!-- Sites Avaialble Sites Avaialble Sites Avaialble -->
+
+                    <StackPanel Grid.Row="0"  Grid.Column="1" Orientation="Horizontal">
+                        <TextBlock  Text="Sites Avaialble" FontWeight="Bold" FontSize="12" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                        <Button Margin="5" >
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconFontAwesome Kind="PlusSolid" />
+                                    <TextBlock Text="Add" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                </StackPanel>
+
+                            </Button.Content>
+                        </Button>
+                        <Button Margin="5">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconFontAwesome Kind="TrashSolid" />
+                                    <TextBlock Text="Delete" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                </StackPanel>
+
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- First column: ListBox with scripts -->
+                    <ListBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Scripts.Scripts}" SelectedItem="{Binding Scripts.SelectedScript}" Margin="5,5,5,5">
+                        <!-- Define DataTemplate for ListBox items -->
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <TextBox  Grid.Row="2"  Grid.Column="1"  Text="This your config text" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"  Margin="5,5,5,5" />
+
+                    <Button Grid.Row="3"  Grid.Column="1"  Content="Save" Margin="5,5,5,0"/>
+
+
+
+
+                    <!-- Sites Enabled  Sites Enabled  Sites Enabled -->
+
+                    <StackPanel Grid.Row="0"  Grid.Column="2" Orientation="Horizontal">
+                        <TextBlock  Text="Sites Enabled" FontWeight="Bold" FontSize="12" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                        <Button Margin="5">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconFontAwesome Kind="PlusSolid" />
+                                    <TextBlock Text="Add" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                </StackPanel>
+
+                            </Button.Content>
+                        </Button>
+                        <Button Margin="5">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconFontAwesome Kind="TrashSolid" />
+                                    <TextBlock Text="Delete" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                </StackPanel>
+
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- First column: ListBox with scripts -->
+                    <ListBox Grid.Column="2" Grid.Row="1" ItemsSource="{Binding Scripts.Scripts}" SelectedItem="{Binding Scripts.SelectedScript}" Margin="5,5,5,5">
+                        <!-- Define DataTemplate for ListBox items -->
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <TextBox  Grid.Row="2"  Grid.Column="2"  Text="This your config text" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"  Margin="5,5,5,5" />
+
+                    <Button Grid.Row="3"  Grid.Column="2"  Content="Save" Margin="5,5,5,0"/>
+
+
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Services">
+                <TabItem.Background>
+                    <ImageBrush ImageSource="Images/bgrnd2.png" Stretch="UniformToFill" AlignmentX="Left" AlignmentY="Top" />
+                </TabItem.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="200px"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- First column: ListBox with scripts -->
+                    <ListBox Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Scripts.Scripts}" SelectedItem="{Binding Scripts.SelectedScript}" Margin="5,5,5,5">
+                        <!-- Define DataTemplate for ListBox items -->
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <StackPanel Grid.Row="1"  Grid.Column="0"  Orientation="Vertical">
+                        <Button  Content="New" Margin="5,5,5,5"/>
+                        <Button  Content="Delete" Margin="5,0,5,5"/>
+                        <Button  Content="Rename" Margin="5,0,5,5"/>
+                        <Button  Content="Start" Margin="5,0,5,5"/>
+                        <Button  Content="Stop" Margin="5,0,5,5"/>
+                        <Button  Content="Info" Margin="5,0,5,5"/>
+                        <Button  Content="Show Log/Output" Margin="5,0,5,5"/>
+                    </StackPanel>
+
+
+                    <TextBox Grid.Row="0"  Grid.Column="1"  Text="This your config text" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"  Margin="5,5,5,5" />
+                    <Button Grid.Row="1"  Grid.Column="1"  Content="Save" Margin="5,5,5,0"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Remote Console">
+                <TabItem.Background>
+                    <ImageBrush ImageSource="Images/bgrnd2.png" Stretch="UniformToFill" AlignmentX="Left" AlignmentY="Top" />
+                </TabItem.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="30px"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="100px"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Row="0" Grid.ColumnSpan="2"  Text="Console output" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto"  Margin="5,5,5,5" />
+
+                    <TextBox Grid.Row="1" Grid.Column="0" Text="Input" MaxLines="1"  Margin="5,5,5,5" />
+                    <Button Grid.Row="1"  Grid.Column="1"  Content="Exec" Margin="5,5,5,5"/>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Mongo">
+                <TabItem.Background>
+                    <ImageBrush ImageSource="Images/bgrnd2.png" Stretch="UniformToFill" AlignmentX="Left" AlignmentY="Top" />
+                </TabItem.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="200px"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Add Mongo Server Controls !!!!!!!!!!!!!!!!!!!!!!!! -->
+
+                    <!-- Mongo Databases !!!!!!!!!!!!!!!!!!!!!!!! -->
+                    <StackPanel Grid.Row="0"  Grid.Column="0"  Orientation="Vertical">
+                        <TextBlock Text="Databases"  Margin="5,0,0,0" FontWeight="Bold"/>
+
+                        <ListBox ItemsSource="{Binding Scripts.Scripts}" SelectedItem="{Binding Scripts.SelectedScript}" Margin="5,5,5,5" Height="222">
+                            <!-- Define DataTemplate for ListBox items -->
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+
+
+                    <StackPanel Grid.Row="1"  Grid.Column="0"  Orientation="Vertical">
+                        <Button  Content="New" Margin="5,5,5,5"/>
+                        <Button  Content="Delete" Margin="5,0,5,5"/>
+                        <Button  Content="Rename" Margin="5,0,5,5"/>
+                        <Button  Content="Start" Margin="5,0,5,5"/>
+                        <Button  Content="Stop" Margin="5,0,5,5"/>
+                        <Button  Content="Info" Margin="5,0,5,5"/>
+                        <Button  Content="Show Log/Output" Margin="5,0,5,5"/>
+                    </StackPanel>
+
+
+
+                    <!-- Mongo Collections opf selected Database !!!!!!!!!!!!!!!!!!!!!!!! -->
+
+
+                    <StackPanel Grid.Row="0"  Grid.Column="1"  Orientation="Vertical">
+                        <TextBlock Text="Collections" Margin="5,0,0,0" />
+
+                        <ListBox ItemsSource="{Binding Scripts.Scripts}" SelectedItem="{Binding Scripts.SelectedScript}" Margin="5,5,5,5" Height="222">
+                            <!-- Define DataTemplate for ListBox items -->
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+
+
+
+                    <StackPanel Grid.Row="1"  Grid.Column="1"  Orientation="Vertical">
+                        <Button  Content="New" Margin="5,5,5,5"/>
+                        <Button  Content="Delete" Margin="5,0,5,5"/>
+                        <Button  Content="Rename" Margin="5,0,5,5"/>
+                        <Button  Content="Start" Margin="5,0,5,5"/>
+                        <Button  Content="Stop" Margin="5,0,5,5"/>
+                        <Button  Content="Info" Margin="5,0,5,5"/>
+                        <Button  Content="Show Log/Output" Margin="5,0,5,5"/>
+                    </StackPanel>
+
+                    <!-- Add Scripting UI !!!!!!!!!!!!!!!!!!!!!!!! -->
+
+                </Grid>
+            </TabItem>
+
+
+            <TabItem Header="Deployments">
+                <TabItem.Background>
+                    <ImageBrush ImageSource="Images/bgrnd2.png" Stretch="UniformToFill" AlignmentX="Left" AlignmentY="Top" />
+                </TabItem.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="30px"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="100px"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <!-- Placeholder for pages -->
+        <Grid x:Name="PageContainer" Grid.Row="1"/>
+    </Grid>
+</Window>

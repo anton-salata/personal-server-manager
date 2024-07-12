@@ -1,0 +1,57 @@
+﻿<Window x:Class="PersonalServerManager.AddServerPopup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PersonalServerManager"
+          xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        mc:Ignorable="d"
+         Icon="Images/sm_icon.png"
+        Title="Add Server" Height="Auto" Width="500">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.Background>
+            <ImageBrush ImageSource="Images/bgrnd2.png" Stretch="UniformToFill" AlignmentX="Left" AlignmentY="Top" />
+        </Grid.Background>
+        <!-- Name Label and TextBox -->
+        <Label Grid.Row="0" Grid.Column="0" Content="Name:" VerticalAlignment="Center" Margin="5"/>
+        <TextBox x:Name="NameTextBox" Grid.Row="0" Grid.Column="1" Margin="5"/>
+
+        <!-- IP Label and TextBox -->
+        <Label Grid.Row="1" Grid.Column="0" Content="IP:" VerticalAlignment="Center" Margin="5"/>
+        <TextBox x:Name="IPTextBox" Grid.Row="1" Grid.Column="1" Margin="5"/>
+
+        <!-- User Label and TextBox -->
+        <Label Grid.Row="2" Grid.Column="0" Content="User:" VerticalAlignment="Center" Margin="5"/>
+        <TextBox x:Name="UserTextBox" Grid.Row="2" Grid.Column="1" Margin="5"/>
+
+        <!-- Password Label and PasswordBox -->
+        <Label Grid.Row="3" Grid.Column="0" Content="Password:" VerticalAlignment="Center" Margin="5"/>
+        <PasswordBox x:Name="PasswordBox" Grid.Row="3" Grid.Column="1" Margin="5"/>
+
+        <Label Grid.Row="4" Grid.Column="0" Content="Notes:" VerticalAlignment="Center" Margin="5"/>
+        <TextBox x:Name="NotesTextBox" Grid.Row="4" Grid.Column="1" Margin="5"/>
+
+        <!-- Add Server Button -->
+        <Button Grid.Row="5" Grid.Column="1" Click="AddServerButton_Click" Margin="5">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconFontAwesome Kind="PlusSolid" Foreground="#e7a634"/>
+                    <TextBlock Text="Add Server" VerticalAlignment="Center" Margin="5,0,0,0" />
+                </StackPanel>
+            </Button.Content>
+        </Button>
+    </Grid>
+</Window>
